@@ -44,7 +44,7 @@ class Setting extends Model
                 continue;
             }
 
-            $groupAlias = $groupItem->group_alias;
+            $groupAlias = $groupItem->getGroupAlias();
             $settingAlias = $settingModel->alias;
 
             array_set($groupData, "$groupAlias.$settingAlias", $settingModel->id);
@@ -68,5 +68,10 @@ class Setting extends Model
         $model->save();
 
         return $model;
+    }
+
+    public function getPreSettingDataAttribute()
+    {
+        return json_decode($this->pre_setting, true);
     }
 }
