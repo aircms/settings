@@ -2,6 +2,8 @@
 
 namespace aircms\settings;
 
+use aircms\settings\Classes\SettingsManager;
+use aircms\settings\Contracts\Settings;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,5 +39,9 @@ class SettingsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/Config/settings.php', 'settings');
+
+        $this->app->singleton(Settings::class, function () {
+            return new SettingsManager();
+        });
     }
 }

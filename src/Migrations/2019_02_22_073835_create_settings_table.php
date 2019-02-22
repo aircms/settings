@@ -19,9 +19,9 @@ class CreateSettingsTable extends Migration
             $table->string('name')->nullable(false);
             $table->string('hint')->nullable(false);
             $table->string('type')->nullable(false);
-            $table->text('pre_setting')->nullable(false);
+            $table->text('pre_setting');
+            $table->text('value');
             $table->integer('order')->default(0);
-            $table->text('value')->default('');
         });
     }
 
