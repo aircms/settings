@@ -25,8 +25,8 @@ Class SettingsManager implements Settings
         return $this->setting->set($keyTree, $value);
     }
 
-    public function all(): array
+    public function all($useCache = true): array
     {
-        return $this->setting->cacheData(true);
+        return $this->setting->cacheData($useCache);
     }
 }

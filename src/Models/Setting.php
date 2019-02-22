@@ -3,7 +3,7 @@
 namespace aircms\settings\Models;
 
 use aircms\groupable\Groupable;
-use aircms\groupable\Models\Group;
+use aircms\groupable\Models\GroupItems;
 use aircms\settings\Exceptions\SettingItemNotExistException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -25,7 +25,7 @@ class Setting extends Model
         return static::find($modelID);
     }
 
-    public function cacheData($useCache = true)
+    public function cacheData($useCache = false)
     {
         $key = "group.settings";
         $groupData = Cache::get($key);
@@ -33,29 +33,25 @@ class Setting extends Model
             return $groupData;
         }
 
-        if (!$groupData) {
-            $groupItems = $this->groupItems();
+        /** @var GroupItems[] $groupItems */
+        $groupItems = $this->groupItems();
 
-            $groupInstances = [];
-            $groupData = [];
-            foreach ($groupItems as $groupItem) {
-                $settingModel = static::find($groupItem->groupable_id);
-                if (!$settingModel) {
-                    continue;
-                }
-
-                if (!$groupModel = array_get($groupInstances, $groupItem->group_id)) {
-                    $groupInstances[$groupItem->group_id] = $groupModel = Group::find($groupItem->group_id);
-                }
-
-                $groupAlias = $groupModel->alias;
-                $settingAlias = $settingModel->alias;
-                $groupData[$groupAlias][$settingAlias] = $settingModel->id;
+        $groupData = [];
+        foreach ($groupItems as $groupItem) {
+            $settingModel = $groupItem->groupableItem;
+            if (!$settingModel) {
+                $groupItem->delete();
+                continue;
             }
 
-            if ($groupData) {
-                Cache::set($key, $groupData, 60 * 60);
-            }
+            $groupAlias = $groupItem->group_alias;
+            $settingAlias = $settingModel->alias;
+
+            array_set($groupData, "$groupAlias.$settingAlias", $settingModel->id);
+        }
+
+        if ($groupData) {
+            Cache::set($key, $groupData, 60 * 60);
         }
 
         return $groupData;

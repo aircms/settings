@@ -8,5 +8,5 @@ Interface Settings
 
     public function set($keyTree, $value);
 
-    public function all(): array;
+    public function all($useCache = true): array;
 }

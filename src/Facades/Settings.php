@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static Setting get($keyTree,$default=null);
  * @method static Setting set($keyTree,$value);
- * @method static array all();
+ * @method static array all($useCache=true);
  *
  * @package aircms\settings\Facades
  */
