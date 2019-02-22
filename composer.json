@@ -1,0 +1,29 @@
+{
+    "name": "aircms/settings",
+    "description": "aircms setting package",
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": ">=7.0",
+        "illuminate/support": "5.*"
+    },
+    "authors": [
+        {
+            "name": "Rogee ",
+            "email": "rogeecn@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "aircms\\settings\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "aircms\\settings\\SettingsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
